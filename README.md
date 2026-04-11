@@ -2,9 +2,9 @@
 
 
 
-!\[License](https://shields.io)
+![License](https://shields.io)
 
-!\[Python](https://shields.io)
+![Python](https://shields.io)
 
 
 
