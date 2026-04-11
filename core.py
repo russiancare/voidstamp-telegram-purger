@@ -2,7 +2,7 @@ import asyncio
 import os
 import sys
 from datetime import datetime, timezone
-from telethon import TelegramClient, functions
+from telethon import TelegramClient, functions, types
 from colorama import init, Fore, Style
 from tqdm import tqdm
 from config_handler import get_credentials
@@ -28,8 +28,8 @@ def draw_logo():
 {G}{B}   |______/     |_| /_/   \_\ |_|  |_|  |_|     
     """
     print(logo)
-    print(f"{G}{B} [>] VERSION: 3.3 | CODENAME: TABULA RASA")
-    print(f"{G}{B} [>] KERNEL: DESTRUCTIVE PROGRESSION ENGINE")
+    print(f"{G}{B} [>] VERSION: 3.4 | CODENAME: TABULA RASA")
+    print(f"{G}{B} [>] KERNEL: STABLE DATA MODIFICATION ENGINE")
     print(f"{G}{B} " + "-"*52 + "\n")
 
 async def run_voidstamp():
@@ -52,40 +52,53 @@ async def run_voidstamp():
         print(f"{G} 2. VOICE_DATA")
         print(f"{G} 3. TEXT_TRAFFIC")
         print(f"{G} 4. FULL_ERASURE")
-        print(f"{G} 5. INACTIVE_NODES")
+        print(f"{G} 5. INACTIVE_NODES (30+ DAYS)")
         
         mode = input(f"\n{G}[SELECT_TARGET]> ")
 
-        # Считаем количество диалогов для общего прогресса
+        print(f"\n{G}[SYSTEM] FETCHING DIALOGS...")
         dialogs = await client.get_dialogs()
         
-        print(f"\n{G}[SYSTEM] INITIALIZING DATA OVERWRITE...\n")
+        print(f"{G}[SYSTEM] INITIALIZING DATA OVERWRITE...\n")
         
-        # Прогресс-бар по всем чатам
         for dialog in tqdm(dialogs, desc=f"{G}TOTAL_PROGRESS", unit="chat", bar_format="{l_bar}{bar}{r_bar}", colour="green"):
-            if dialog.is_channel and not (getattr(dialog.entity, 'creator', False) or getattr(dialog.entity, 'admin_rights', None)):
-                continue
-
-            if mode == '5':
-                if dialog.date and (current_limit - dialog.date).days > 30:
-                    await client(functions.messages.DeleteHistoryRequest(peer=dialog.id, max_id=0, revoke=True))
-                continue
-
-            payload = []
             try:
+                # Режим 5: Удаление неактивных чатов
+                if mode == '5':
+                    if dialog.date and (current_limit - dialog.date).days > 30:
+                        try:
+                            # Используем delete_dialog как самый надежный метод
+                            await client.delete_dialog(dialog.id, revoke=True)
+                        except Exception:
+                            continue # Пропускаем системные или битые чаты
+                    continue
+
+                # Игнорируем каналы, если нет прав на удаление
+                if dialog.is_channel and not (getattr(dialog.entity, 'creator', False) or getattr(dialog.entity, 'admin_rights', None)):
+                    continue
+
+                payload = []
                 async for msg in client.iter_messages(dialog.id, offset_date=current_limit):
                     if msg.date < target_date:
                         break
+                    
                     if not msg.out:
                         continue
 
                     match = False
-                    if mode == '1' and msg.video and getattr(msg.video, 'round_message', False):
-                        match = True
-                    elif mode == '2' and msg.voice:
-                        match = True
-                    elif mode == '3' and msg.text and not msg.media:
-                        match = True
+                    # Проверка кружков
+                    if mode == '1':
+                        if msg.video and getattr(msg.video, 'round_message', False):
+                            match = True
+                    # Проверка голосовых
+                    elif mode == '2':
+                        if msg.voice:
+                            match = True
+                    # Проверка текста
+                    elif mode == '3':
+                        if msg.text and not msg.media:
+                            match = True
+                    # Полное удаление
                     elif mode == '4':
                         match = True
 
@@ -94,9 +107,10 @@ async def run_voidstamp():
 
                 if payload:
                     await client.delete_messages(dialog.id, payload, revoke=True)
-                    await asyncio.sleep(0.1)
+                    await asyncio.sleep(0.2) # Небольшая пауза для обхода FloodWait
 
             except Exception:
+                # Общий перехват для пропуска чатов с PeerIdInvalidError или заблокированных
                 continue
 
         print(f"\n{G}{B}[SUCCESS] VOIDSTAMP COMPLETE. ALL TRACES NULLIFIED.")
