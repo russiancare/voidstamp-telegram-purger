@@ -31,11 +31,9 @@
 
 1\. Clone the repository:
 
-&nbsp;  ```bash
-
-&nbsp;  git clone https://github.com/russiancare/voidstamp-telegram-purger/tree/main
-
-&nbsp;  cd voidstamp-telegram-purger
+```bash
+git clone https://github.com/russiancare/voidstamp-telegram-purger/tree/main
+cd voidstamp-telegram-purger
 
 
 
