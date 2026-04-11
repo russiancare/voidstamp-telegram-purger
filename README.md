@@ -33,7 +33,7 @@
 
 &nbsp;  ```bash
 
-&nbsp;  git clone https://github.com
+&nbsp;  git clone https://github.com/russiancare/voidstamp-telegram-purger/tree/main
 
 &nbsp;  cd voidstamp-telegram-purger
 
