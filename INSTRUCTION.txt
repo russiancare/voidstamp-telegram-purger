@@ -1,0 +1,36 @@
+===========================================================
+    VOIDSTAMP v3.3 | SYSTEM OPERATIONAL INSTRUCTIONS
+===========================================================
+
+1. INITIAL SETUP
+----------------
+- Ensure Python 3.8+ is installed on your system.
+- Deploy dependencies using the following command:
+  pip install -r requirements.txt
+
+2. AUTHENTICATION (FIRST RUN ONLY)
+----------------------------------
+- Launch the engine via 'python core.py'.
+- When prompted, enter your Telegram API_ID and API_HASH.
+- Credentials will be encrypted and locked in '.void_vault'.
+- To reset credentials, manually delete the '.void_vault' file.
+
+3. OPERATION PROTOCOLS
+----------------------
+[1] VIDEO_ROUNDS: Destroys all outgoing video messages (circles).
+[2] VOICE_DATA: Purges all outgoing voice recordings.
+[3] TEXT_TRAFFIC: Removes all plain text outgoing messages.
+[4] TOTAL_WIPE: Complete destruction of all outgoing media and text.
+[5] INACTIVE_NODES: Auto-leaves chats with no activity for 30+ days.
+
+4. SAFETY & REVOCATION
+----------------------
+- All deletion tasks use the 'revoke=True' flag.
+- This ensures data is removed for BOTH the sender and receiver.
+- Action is final. Data overwritten by VOIDSTAMP is unrecoverable.
+
+5. SYSTEM STATUS
+----------------
+- Progress is monitored via the TQDM progression bar.
+- Do not terminate the session during a 'TOTAL_WIPE' operation.
+===========================================================
