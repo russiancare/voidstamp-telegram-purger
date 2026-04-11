@@ -1,0 +1,15 @@
+# Authentication and Session files (CRITICAL)
+.void_vault
+*.session
+*.json
+
+# Data and logs
+intercepted_data/
+secret_log.txt
+downloads/
+
+# Python environment
+__pycache__/
+*.pyc
+.env
+.venv/
