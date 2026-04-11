@@ -18,5 +18,5 @@
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/russiancare/voidstamp-telegram-purger/tree/main
+git clone https://github.com/russiancare/voidstamp-telegram-purger.git
 cd voidstamp-telegram-purger
