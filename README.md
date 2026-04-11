@@ -36,7 +36,7 @@
 
 &nbsp;  git clone https://github.com
 
-&nbsp;  cd voidstamp
+&nbsp;  cd voidstamp-telegram-purger
 
 
 
