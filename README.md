@@ -2,13 +2,13 @@
 
 
 
-![License](https://shields.io)
+# VOIDSTAMP v3.3 | Digital Footprint Eraser
 
+![License](https://shields.io)
 ![Python](https://shields.io)
 
+**VOIDSTAMP** is a high-performance terminal-based utility designed for deep cleansing of digital traces within Telegram. It leverages the Telethon library to automate the destruction of outgoing metadata, media, and communication logs.
 
-
-\*\*VOIDSTAMP\*\* is a high-performance terminal-based utility designed for deep cleansing of digital traces within Telegram. It leverages the Telethon library to automate the destruction of outgoing metadata, media, and communication logs.
 
 
 
