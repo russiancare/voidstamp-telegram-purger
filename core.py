@@ -63,17 +63,14 @@ async def run_voidstamp():
         
         for dialog in tqdm(dialogs, desc=f"{G}TOTAL_PROGRESS", unit="chat", bar_format="{l_bar}{bar}{r_bar}", colour="green"):
             try:
-                # Режим 5: Удаление неактивных чатов
                 if mode == '5':
                     if dialog.date and (current_limit - dialog.date).days > 30:
                         try:
-                            # Используем delete_dialog как самый надежный метод
                             await client.delete_dialog(dialog.id, revoke=True)
                         except Exception:
-                            continue # Пропускаем системные или битые чаты
+                            continue
                     continue
 
-                # Игнорируем каналы, если нет прав на удаление
                 if dialog.is_channel and not (getattr(dialog.entity, 'creator', False) or getattr(dialog.entity, 'admin_rights', None)):
                     continue
 
@@ -86,19 +83,15 @@ async def run_voidstamp():
                         continue
 
                     match = False
-                    # Проверка кружков
                     if mode == '1':
                         if msg.video and getattr(msg.video, 'round_message', False):
                             match = True
-                    # Проверка голосовых
                     elif mode == '2':
                         if msg.voice:
                             match = True
-                    # Проверка текста
                     elif mode == '3':
                         if msg.text and not msg.media:
                             match = True
-                    # Полное удаление
                     elif mode == '4':
                         match = True
 
@@ -107,10 +100,9 @@ async def run_voidstamp():
 
                 if payload:
                     await client.delete_messages(dialog.id, payload, revoke=True)
-                    await asyncio.sleep(0.2) # Небольшая пауза для обхода FloodWait
+                    await asyncio.sleep(0.2)
 
             except Exception:
-                # Общий перехват для пропуска чатов с PeerIdInvalidError или заблокированных
                 continue
 
         print(f"\n{G}{B}[SUCCESS] VOIDSTAMP COMPLETE. ALL TRACES NULLIFIED.")
